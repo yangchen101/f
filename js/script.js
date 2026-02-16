@@ -364,6 +364,7 @@ const appNodes = {
 	pauseBtnSVG: '.pause-btn use',
 	soundBtn: '.sound-btn',
 	soundBtnSVG: '.sound-btn use',
+	menuBtn: '.menu-btn',
 	shellType: '.shell-type',
 	shellTypeLabel: '.shell-type-label',
 	shellSize: '.shell-size',
@@ -386,13 +387,8 @@ const appNodes = {
 	fullscreenLabel: '.fullscreen-label',
 	longExposure: '.long-exposure',
 	longExposureLabel: '.long-exposure-label',
-	
-	// Help UI
-	helpModal: '.help-modal',
-	helpModalOverlay: '.help-modal__overlay',
-	helpModalHeader: '.help-modal__header',
-	helpModalBody: '.help-modal__body',
-	helpModalCloseBtn: '.help-modal__close-btn'
+	closeMenuBtn: '.close-menu-btn',
+
 };
 
 // Convert appNodes selectors to dom nodes
@@ -429,13 +425,7 @@ function renderApp(state) {
 	appNodes.longExposure.checked = state.config.longExposure;
 	appNodes.scaleFactor.value = state.config.scaleFactor.toFixed(2);
 	
-	appNodes.menuInnerWrap.style.opacity = state.openHelpTopic ? 0.12 : 1;
-	appNodes.helpModal.classList.toggle('active', !!state.openHelpTopic);
-	if (state.openHelpTopic) {
-		const { header, body } = helpContent[state.openHelpTopic];
-		appNodes.helpModalHeader.textContent = header;
-		appNodes.helpModalBody.textContent = body;
-	}
+	appNodes.menuInnerWrap.style.opacity = 1;
 }
 
 store.subscribe(renderApp);
@@ -495,13 +485,11 @@ Object.keys(nodeKeyToHelpKey).forEach(nodeKey => {
 	});
 });
 
-appNodes.helpModalCloseBtn.addEventListener('click', () => {
-	store.setState({ openHelpTopic: null });
+appNodes.closeMenuBtn.addEventListener('click', () => {
+	toggleMenu(false);
 });
 
-appNodes.helpModalOverlay.addEventListener('click', () => {
-	store.setState({ openHelpTopic: null });
-});
+
 
 
 
